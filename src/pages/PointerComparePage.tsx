@@ -1,12 +1,32 @@
 import { useMemo, useRef, useState, useEffect } from 'react';
-import { Card, Button, Select, Input, InputNumber, Switch, Space, Typography, Divider, Tag, Progress, Transfer, App, Tooltip, Checkbox, Empty } from 'antd';
+import {
+  Card,
+  Button,
+  Select,
+  Input,
+  InputNumber,
+  Switch,
+  Space,
+  Typography,
+  Divider,
+  Tag,
+  Progress,
+  Transfer,
+  App,
+  Tooltip,
+  Checkbox,
+  Empty,
+  Row,
+  Col,
+} from 'antd';
 import { PlayCircleOutlined, ReloadOutlined } from '@ant-design/icons';
 import type { TransferItem } from 'antd/es/transfer';
 import { scanService, type OutputFileInfo } from '../services/scanService';
 import { getServerUrl } from '../utils/config';
 import { renderAnsiText } from '../utils/ansiColors';
+import './PointerComparePage.css';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 const { Option } = Select;
 
 export default function PointerComparePage() {
@@ -152,6 +172,10 @@ export default function PointerComparePage() {
       .filter(Boolean) as OutputFileInfo[];
   }, [selectedKeys, files]);
 
+  const transferListHeight = isMobile ? 460 : 560;
+  const tinyNumberWidth = isMobile ? 50 : 96;
+  const normalNumberWidth = isMobile ? 200 : 240;
+
   const handleCompare = async () => {
     if (compareMode === 'binary' && selectedKeys.length < 2) {
       message.warning('二进制对比请至少选择2个文件');
@@ -218,88 +242,83 @@ export default function PointerComparePage() {
   };
 
   return (
-    <div className="page-container search-page-wide" style={{ width: '100%', maxWidth: 'none', margin: '0 auto' }}>
-      <Card className="glass-card">
-        <Title level={3}>指针对比</Title>
-        <Text type="secondary">从当前项目目录选择输出文件，使用穿梭框挑选需要对比的文件</Text>
-      </Card>
-      
-      <div className="pointer-compare-grid">
-        <Card
-          className="glass-card"
-          title={
-            <Space>
-              <span>文件选择</span>
-              <Button size="small" icon={<ReloadOutlined />} onClick={loadFiles}>
-                刷新
-              </Button>
-            </Space>
-          }
-        >
-          {isMobile ? (
-            <div className="pointer-compare-mobile-file-picker">
-              <Input
-                value={mobileListSearch}
-                onChange={(e) => setMobileListSearch(e.target.value)}
-                placeholder="搜索文件名..."
-                allowClear
-                className="search-transparent-input"
-              />
+    <div className="page-container search-page-wide pointer-compare-page" style={{ width: '100%', maxWidth: 'none', margin: '0 auto' }}>
+      <Card
+        className="glass-card"
+        title="文件选择"
+        extra={
+          <Space>
+            <Button size="small" icon={<ReloadOutlined />} onClick={loadFiles}>
+              刷新
+            </Button>
+          </Space>
+        }
+      >
+        {isMobile ? (
+          <div className="pointer-compare-mobile-file-picker">
+            <Input
+              value={mobileListSearch}
+              onChange={(e) => setMobileListSearch(e.target.value)}
+              placeholder="搜索文件名..."
+              allowClear
+              className="search-transparent-input"
+            />
 
-              <Divider style={{ margin: '12px 0' }} />
+            <Divider style={{ margin: '12px 0' }} />
 
-              <div className="pointer-compare-mobile-file-list">
-                {mobileFilteredFiles.length === 0 ? (
-                  <Empty description="暂无文件" />
-                ) : (
-                  <div>
-                    {mobileFilteredFiles.map((f) => {
-                      const isSelected = selectedKeys.includes(f.path);
-                      const reachedLimit = selectedKeys.length >= compareSelectionLimit;
-                      const disabled = reachedLimit && !isSelected;
-                      const sizeMB = (f.size / 1024 / 1024).toFixed(2);
-                      const bitTag = f.bitSize === 32 ? '32位' : f.bitSize === 64 ? '64位' : '未知位数';
-                      return (
-                        <div
-                          key={f.path}
-                          className={`pointer-compare-mobile-file-item ${disabled ? 'is-disabled' : ''}`}
-                          onClick={() => {
-                            if (disabled) return;
-                            setSelectedKeys((prev) => (isSelected ? prev.filter((k) => k !== f.path) : [...prev, f.path]));
-                          }}
-                        >
-                          <div style={{ display: 'flex', gap: 12, width: '100%', alignItems: 'flex-start' }}>
-                            <Checkbox checked={isSelected} disabled={disabled} />
-                            <div style={{ flex: 1, minWidth: 0 }}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                                <Text style={{ fontWeight: 600, color: 'rgba(248, 250, 252, 0.95)' }}>{f.filename}</Text>
-                                <Tag color="blue" style={{ margin: 0 }}>{bitTag}</Tag>
-                              </div>
-                              <Text type="secondary" style={{ fontSize: 12, display: 'block' }}>
-                                {sizeMB} MB · {f.modifiedTime}
-                              </Text>
-                              {disabled && (
-                                <Text type="warning" style={{ fontSize: 12, display: 'block' }}>
-                                  已达到上限 {compareSelectionLimit} 个
-                                </Text>
-                              )}
+            <div className="pointer-compare-mobile-file-list">
+              {mobileFilteredFiles.length === 0 ? (
+                <Empty description="暂无文件" />
+              ) : (
+                <div>
+                  {mobileFilteredFiles.map((f) => {
+                    const isSelected = selectedKeys.includes(f.path);
+                    const reachedLimit = selectedKeys.length >= compareSelectionLimit;
+                    const disabled = reachedLimit && !isSelected;
+                    const sizeMB = (f.size / 1024 / 1024).toFixed(2);
+                    const bitTag = f.bitSize === 32 ? '32位' : f.bitSize === 64 ? '64位' : '未知位数';
+                    return (
+                      <div
+                        key={f.path}
+                        className={`pointer-compare-mobile-file-item ${disabled ? 'is-disabled' : ''}`}
+                        onClick={() => {
+                          if (disabled) return;
+                          setSelectedKeys((prev) =>
+                            isSelected ? prev.filter((k) => k !== f.path) : [...prev, f.path]
+                          );
+                        }}
+                      >
+                        <div style={{ display: 'flex', gap: 12, width: '100%', alignItems: 'flex-start' }}>
+                          <Checkbox checked={isSelected} disabled={disabled} />
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                              <Text style={{ fontWeight: 600, color: 'rgba(248, 250, 252, 0.95)' }}>{f.filename}</Text>
+                              <Tag color="blue" style={{ margin: 0 }}>
+                                {bitTag}
+                              </Tag>
                             </div>
+                            <Text type="secondary" style={{ fontSize: 12, display: 'block' }}>
+                              {sizeMB} MB · {f.modifiedTime}
+                            </Text>
+                            {disabled && (
+                              <Text type="warning" style={{ fontSize: 12, display: 'block' }}>
+                                已达到上限 {compareSelectionLimit} 个
+                              </Text>
+                            )}
                           </div>
                         </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
 
-              <Divider style={{ margin: '12px 0' }} />
-
-              <div className="pointer-compare-mobile-selected">
-                <Text>
-                  已选择: {selectedKeys.length} 个文件（当前上限 {compareSelectionLimit} 个）
-                </Text>
-                {selectedKeys.length > 0 && (
-                  <div style={{ marginTop: 10, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {selectedKeys.length > 0 && (
+              <>
+                <Divider style={{ margin: '12px 0' }} />
+                <div className="pointer-compare-mobile-selected">
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                     {selectedFiles.map((f) => (
                       <Tag
                         key={f.path}
@@ -315,45 +334,94 @@ export default function PointerComparePage() {
                       </Tag>
                     ))}
                   </div>
-                )}
-              </div>
-            </div>
-          ) : (
-            <Transfer
-              dataSource={transferDataSource}
-              titles={['可选文件', '已选择']}
-              targetKeys={selectedKeys}
-              onChange={(nextTargetKeys) => setSelectedKeys(nextTargetKeys.map((k) => String(k)))}
-              render={(item) => (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ fontWeight: 600, color: 'rgba(248, 250, 252, 0.95)' }}>{item.title}</span>
-                    <Tag color="blue" style={{ margin: 0 }}>{files.find(f => f.path === item.key)?.bitSize ?? 'N/A'}</Tag>
-                  </div>
-                  <span style={{ fontSize: 12, color: 'rgba(203, 213, 225, 0.8)' }}>{item.description}</span>
                 </div>
-              )}
-              showSearch
-              className="search-transparent-input pointer-compare-transfer"
-              oneWay
-            />
-          )}
-          <Divider />
-          <Text>
-            已选择: {selectedKeys.length} 个文件（当前上限 {compareSelectionLimit} 个）
-          </Text>
-          {selectedKeys.length >= compareSelectionLimit && (
-            <div style={{ marginTop: 8 }}>
-              <Text type="warning">
-                {compareMode === 'binary'
-                  ? '已达到上限 8 个，如需继续请选择先移除右侧文件。'
-                  : '当前模式仅支持 2 个文件，请先移除右侧文件。'}
-              </Text>
-            </div>
-          )}
-        </Card>
+              </>
+            )}
+          </div>
+        ) : (
+          <Transfer
+            dataSource={transferDataSource}
+            titles={['可选文件', '已选择']}
+            targetKeys={selectedKeys}
+            onChange={(nextTargetKeys) => setSelectedKeys(nextTargetKeys.map((k) => String(k)))}
+            render={(item) => (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontWeight: 600, color: 'rgba(248, 250, 252, 0.95)' }}>{item.title}</span>
+                  <Tag color="blue" style={{ margin: 0 }}>
+                    {(() => {
+                      const bit = files.find((f) => f.path === item.key)?.bitSize ?? -1;
+                      return bit === 32 ? '32位' : bit === 64 ? '64位' : '未知位数';
+                    })()}
+                  </Tag>
+                </div>
+                <span style={{ fontSize: 12, color: 'rgba(203, 213, 225, 0.8)' }}>{item.description}</span>
+              </div>
+            )}
+            showSearch
+            locale={{
+              itemUnit: '个文件',
+              itemsUnit: '个文件',
+              searchPlaceholder: '搜索文件名...',
+              notFoundContent: '暂无文件',
+            }}
+            listStyle={{ width: 'calc((100% - 56px - 16px) / 2)', height: transferListHeight }}
+            className="pointer-compare-transfer pointer-compare-file-transfer"
+            oneWay
+          />
+        )}
 
-        <Card className="glass-card" title="对比配置">
+        <Divider style={{ margin: '14px 0 12px' }} />
+
+        <Row gutter={[12, 12]} align="middle" justify={isMobile ? 'center' : 'space-between'}>
+          <Col flex="auto">
+            <Space direction="vertical" size={2}>
+              <Text>
+                已选择: {selectedKeys.length} 个文件（当前上限 {compareSelectionLimit} 个）
+              </Text>
+              {selectedKeys.length >= compareSelectionLimit && (
+                <Text type="warning">
+                  {compareMode === 'binary'
+                    ? '已达到上限 8 个，如需继续请选择先移除右侧文件。'
+                    : '当前模式仅支持 2 个文件，请先移除右侧文件。'}
+                </Text>
+              )}
+            </Space>
+          </Col>
+          <Col style={isMobile ? { width: '100%', textAlign: 'center' } : undefined}>
+            <Tooltip
+              title={
+                comparing
+                  ? '对比进行中'
+                  : compareMode === 'binary'
+                    ? selectedKeys.length < 2
+                      ? '二进制对比至少选择2个文件'
+                      : ''
+                    : selectedKeys.length !== 2
+                      ? '单线程/文本对比必须选择2个文件'
+                      : ''
+              }
+            >
+              <span>
+                <Button
+                  type="primary"
+                  icon={<PlayCircleOutlined />}
+                  onClick={handleCompare}
+                  disabled={
+                    comparing ||
+                    (compareMode === 'binary' ? selectedKeys.length < 2 : selectedKeys.length !== 2)
+                  }
+                  size="large"
+                >
+                  开始对比
+                </Button>
+              </span>
+            </Tooltip>
+          </Col>
+        </Row>
+      </Card>
+
+      <Card className="glass-card" title="对比配置">
         <Space direction="vertical" style={{ width: '100%' }} size="large">
           <div className="pointer-compare-config-row">
             <Text>对比模式</Text>
@@ -368,57 +436,126 @@ export default function PointerComparePage() {
             </Select>
           </div>
 
-          <div className="pointer-compare-config-row">
-            <Text>层级限制</Text>
-            <InputNumber
-              value={levelLimit}
-              onChange={(val) => setLevelLimit(val || 0)}
-              min={0}
-              placeholder="0=不限制"
-              style={{ width: 'min(180px, 100%)' }}
-            />
-            <Text type="secondary">或范围</Text>
-            <div className="pointer-compare-range">
-              <InputNumber
-                value={levelRange[0]}
-                onChange={(val) => setLevelRange([val || 0, levelRange[1]])}
-                min={0}
-                placeholder="起始"
-                style={{ width: 'min(160px, 100%)' }}
-              />
-              <Text type="secondary">-</Text>
-              <InputNumber
-                value={levelRange[1]}
-                onChange={(val) => setLevelRange([levelRange[0], val || 0])}
-                min={0}
-                placeholder="结束"
-                style={{ width: 'min(160px, 100%)' }}
-              />
-            </div>
-          </div>
+          {isMobile ? (
+            <>
+              <div className="pointer-compare-config-row">
+                <Text>层级限制</Text>
+                <InputNumber
+                  value={levelLimit}
+                  onChange={(val) => setLevelLimit(val || 0)}
+                  min={0}
+                  max={99}
+                  placeholder="0=不限制"
+                  style={{ width: `${tinyNumberWidth}px` }}
+                />
+                <Text type="secondary">或</Text>
+                <div className="pointer-compare-range">
+                  <InputNumber
+                    value={levelRange[0]}
+                    onChange={(val) => setLevelRange([val || 0, levelRange[1]])}
+                    min={0}
+                    max={99}
+                    placeholder="起始"
+                    style={{ width: `${tinyNumberWidth}px` }}
+                  />
+                  <Text type="secondary">-</Text>
+                  <InputNumber
+                    value={levelRange[1]}
+                    onChange={(val) => setLevelRange([levelRange[0], val || 0])}
+                    min={0}
+                    max={99}
+                    placeholder="结束"
+                    style={{ width: `${tinyNumberWidth}px` }}
+                  />
+                </div>
+              </div>
 
-          <div className="pointer-compare-config-row">
-            <Text>限制数量</Text>
-            <InputNumber
-              value={maxResults}
-              onChange={(val) => setMaxResults(val || 0)}
-              min={0}
-              placeholder="0=不限制"
-              style={{ width: 'min(360px, 100%)' }}
-            />
-          </div>
+              <div className="pointer-compare-config-row">
+                <Text>限制数量</Text>
+                <InputNumber
+                  value={maxResults}
+                  onChange={(val) => setMaxResults(val || 0)}
+                  min={0}
+                  placeholder="0=不限制"
+                  style={{ width: `${normalNumberWidth}px` }}
+                />
+              </div>
 
-          {compareMode === 'binary' && (
-            <div className="pointer-compare-config-row">
-              <Text>线程数量</Text>
-              <InputNumber
-                value={threadCount}
-                onChange={(val) => setThreadCount(val || 4)}
-                min={1}
-                max={16}
-                style={{ width: 'min(260px, 100%)' }}
-              />
-            </div>
+              {compareMode === 'binary' && (
+                <div className="pointer-compare-config-row">
+                  <Text>线程数量</Text>
+                  <InputNumber
+                    value={threadCount}
+                    onChange={(val) => setThreadCount(val || 4)}
+                    min={1}
+                    max={16}
+                    style={{ width: `${normalNumberWidth}px` }}
+                  />
+                </div>
+              )}
+            </>
+          ) : (
+            <Row gutter={16}>
+              <Col span={8}>
+                <Space direction="vertical" size={8} style={{ width: '100%' }}>
+                  <Text>层级限制</Text>
+                  <Space size={8} wrap>
+                    <InputNumber
+                      value={levelLimit}
+                      onChange={(val) => setLevelLimit(val || 0)}
+                      min={0}
+                      max={99}
+                      placeholder="0=不限制"
+                      style={{ width: `${tinyNumberWidth}px` }}
+                    />
+                    <Text type="secondary">或</Text>
+                    <InputNumber
+                      value={levelRange[0]}
+                      onChange={(val) => setLevelRange([val || 0, levelRange[1]])}
+                      min={0}
+                      max={99}
+                      placeholder="起始"
+                      style={{ width: `${tinyNumberWidth}px` }}
+                    />
+                    <Text type="secondary">-</Text>
+                    <InputNumber
+                      value={levelRange[1]}
+                      onChange={(val) => setLevelRange([levelRange[0], val || 0])}
+                      min={0}
+                      max={99}
+                      placeholder="结束"
+                      style={{ width: `${tinyNumberWidth}px` }}
+                    />
+                  </Space>
+                </Space>
+              </Col>
+              <Col span={8}>
+                <Space direction="vertical" size={8} style={{ width: '100%' }}>
+                  <Text>限制数量</Text>
+                  <InputNumber
+                    value={maxResults}
+                    onChange={(val) => setMaxResults(val || 0)}
+                    min={0}
+                    placeholder="0=不限制"
+                    style={{ width: `${normalNumberWidth}px` }}
+                  />
+                </Space>
+              </Col>
+              {compareMode === 'binary' && (
+                <Col span={8}>
+                  <Space direction="vertical" size={8} style={{ width: '100%' }}>
+                    <Text>线程数量</Text>
+                    <InputNumber
+                      value={threadCount}
+                      onChange={(val) => setThreadCount(val || 4)}
+                      min={1}
+                      max={16}
+                      style={{ width: `${normalNumberWidth}px` }}
+                    />
+                  </Space>
+                </Col>
+              )}
+            </Row>
           )}
 
           {supportsTextOnlyCompareArgs && (
@@ -439,25 +576,13 @@ export default function PointerComparePage() {
                 onChange={(val) => setRemoveLevel(val || 0)}
                 min={0}
                 placeholder="0=不去除"
-                style={{ width: 'min(260px, 100%)' }}
+                style={{ width: `${normalNumberWidth}px` }}
               />
             </div>
           )}
 
-          <div>
-            <Space>
-              <Text>输出格式:</Text>
-              <Tag color={compareMode === 'text' ? 'default' : 'blue'} style={{ margin: 0 }}>
-                {compareMode === 'text' ? '文本（固定）' : '二进制（固定）'}
-              </Tag>
-              <Text type="secondary">
-                {compareMode === 'text' ? '文本模式固定输出文本' : '二进制/单线程模式固定输出二进制'}
-              </Text>
-            </Space>
-          </div>
         </Space>
-        </Card>
-      </div>
+      </Card>
 
       {comparing && (
         <Card className="glass-card" style={{ marginTop: 24 }}>
@@ -530,33 +655,6 @@ export default function PointerComparePage() {
           </div>
         </Card>
       )}
-
-      <Space style={{ marginTop: 24 }}>
-        <Tooltip
-          title={
-            comparing
-              ? '对比进行中'
-              : compareMode === 'binary'
-                ? (selectedKeys.length < 2 ? '二进制对比至少选择2个文件' : '')
-                : (selectedKeys.length !== 2 ? '单线程/文本对比必须选择2个文件' : '')
-          }
-        >
-          <span>
-            <Button
-              type="primary"
-              icon={<PlayCircleOutlined />}
-              onClick={handleCompare}
-              disabled={
-                comparing ||
-                (compareMode === 'binary' ? selectedKeys.length < 2 : selectedKeys.length !== 2)
-              }
-              size="large"
-            >
-              开始对比
-            </Button>
-          </span>
-        </Tooltip>
-      </Space>
     </div>
   );
 }

@@ -1,0 +1,216 @@
+/* PointerComparePage 专属样式：避免污染全局 */
+
+.pointer-compare-config-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.pointer-compare-range {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Transfer：只负责横向排版（宽高由 listStyle 控制） */
+.pointer-compare-transfer.ant-transfer {
+  display: flex;
+  width: 100%;
+  gap: 16px;
+}
+
+.pointer-compare-file-transfer.ant-transfer {
+  --pc-panel-bg: rgba(15, 23, 42, 0.55);
+  --pc-panel-border: rgba(148, 163, 184, 0.16);
+  --pc-panel-border-hover: rgba(59, 130, 246, 0.35);
+  --pc-text: rgba(248, 250, 252, 0.92);
+  --pc-text-secondary: rgba(203, 213, 225, 0.75);
+  --pc-focus: rgba(59, 130, 246, 0.45);
+}
+
+.pointer-compare-transfer.ant-transfer .ant-transfer-list {
+  flex: 1 1 0;
+  min-width: 0;
+  width: auto !important;
+  height: 100%;
+  max-width: none;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list {
+  background: var(--pc-panel-bg) !important;
+  border: 1px solid var(--pc-panel-border) !important;
+  border-radius: 14px !important;
+  overflow: hidden;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: inset 0 1px 0 rgba(148, 163, 184, 0.08);
+}
+
+.pointer-compare-file-transfer .ant-transfer-list:hover {
+  border-color: var(--pc-panel-border-hover) !important;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-header {
+  background: rgba(2, 6, 23, 0.28) !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14) !important;
+  padding: 10px 14px !important;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-header-title,
+.pointer-compare-file-transfer .ant-transfer-list-header-selected {
+  color: var(--pc-text) !important;
+  font-weight: 600;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-header-dropdown {
+  color: var(--pc-text-secondary) !important;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-search {
+  padding: 10px 14px !important;
+  background: transparent !important;
+}
+
+.pointer-compare-file-transfer .ant-input-affix-wrapper.ant-transfer-list-search-action,
+.pointer-compare-file-transfer .ant-input-affix-wrapper.ant-transfer-list-search {
+  background: rgba(2, 6, 23, 0.25) !important;
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+.pointer-compare-file-transfer .ant-input-affix-wrapper .ant-input {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: var(--pc-text) !important;
+}
+
+.pointer-compare-file-transfer .ant-input-affix-wrapper .ant-input::placeholder {
+  color: rgba(203, 213, 225, 0.6) !important;
+}
+
+.pointer-compare-file-transfer .ant-input-affix-wrapper:hover {
+  border-color: rgba(148, 163, 184, 0.28) !important;
+}
+
+.pointer-compare-file-transfer .ant-input-affix-wrapper-focused,
+.pointer-compare-file-transfer .ant-input-affix-wrapper:focus-within {
+  border-color: var(--pc-focus) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.16) !important;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-body {
+  background: transparent !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-body::-webkit-scrollbar {
+  display: block !important;
+  width: 8px;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-body::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 8px;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-content-item {
+  padding: 10px 12px !important;
+  margin: 0 !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-content-item:last-child {
+  border-bottom: none;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-content-item:hover {
+  background: rgba(59, 130, 246, 0.08) !important;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-content-item-checked {
+  background: rgba(59, 130, 246, 0.12) !important;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-content-item-disabled {
+  opacity: 0.55;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-content-item-text,
+.pointer-compare-file-transfer .ant-transfer-list-content-item-text * {
+  color: var(--pc-text) !important;
+}
+
+.pointer-compare-file-transfer .ant-transfer-list-footer {
+  background: rgba(2, 6, 23, 0.18) !important;
+  border-top: 1px solid rgba(148, 163, 184, 0.12) !important;
+}
+
+.pointer-compare-transfer.ant-transfer .ant-transfer-operation {
+  flex: 0 0 56px;
+  width: 56px;
+}
+
+.pointer-compare-file-transfer .ant-transfer-operation .ant-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(30, 41, 59, 0.65) !important;
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  color: rgba(248, 250, 252, 0.9) !important;
+}
+
+.pointer-compare-file-transfer .ant-transfer-operation .ant-btn:hover:not(:disabled) {
+  border-color: rgba(59, 130, 246, 0.35) !important;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.pointer-compare-file-transfer .ant-transfer-operation .ant-btn:disabled {
+  opacity: 0.45;
+}
+
+.pointer-compare-transfer .ant-transfer-list-content-item-text {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.pointer-compare-mobile-file-picker .ant-empty-description {
+  color: rgba(203, 213, 225, 0.75) !important;
+}
+
+.pointer-compare-mobile-file-list {
+  max-height: 46vh;
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.pointer-compare-mobile-file-item {
+  cursor: pointer;
+  padding: 12px 12px !important;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(15, 23, 42, 0.42);
+  margin-bottom: 10px;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.pointer-compare-mobile-file-item:hover {
+  border-color: rgba(59, 130, 246, 0.35);
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.pointer-compare-mobile-file-item.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+

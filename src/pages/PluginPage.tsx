@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, App, Button, Card, Form, Input, Space, Tag, Typography } from 'antd';
+import { Alert, App, Button, Card, Form, Input, Space, Tag } from 'antd';
 import { CheckCircleOutlined, ExperimentOutlined, SaveOutlined } from '@ant-design/icons';
 import { scanService, type RwPluginTestReport } from '../services/scanService';
 
-const { Title, Text } = Typography;
 const DEFAULT_RW_PLUGIN_PATH = '/data/local/tmp/libmemory.so';
 
 const PluginPage: React.FC = () => {
@@ -91,11 +90,6 @@ const PluginPage: React.FC = () => {
         margin: '0 auto'
       }}
     >
-      <Card className="glass-card" loading={loading}>
-        <Title level={3}>插件管理</Title>
-        <Text type="secondary">根据当前读写模式决定是否启用读写插件配置。</Text>
-      </Card>
-
       <Card
         className="glass-card"
         title={

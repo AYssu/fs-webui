@@ -23,7 +23,7 @@ import {
   CodeOutlined
 } from '@ant-design/icons';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -199,11 +199,6 @@ echo 你好, %name%!`
 
   return (
     <div className="page-container">
-      <Card className="glass-card">
-        <Title level={3}>脚本转换</Title>
-        <Text type="secondary">各种脚本语言之间的转换工具</Text>
-      </Card>
-
       <Card className="glass-card" title="转换设置">
         <Space size="large" style={{ width: '100%', marginBottom: 16 }} wrap>
           <div>

@@ -18,7 +18,7 @@ import {
 
 } from '@ant-design/icons';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 const { Option } = Select;
 
 const BaseFilterPage: React.FC = () => {
@@ -170,11 +170,6 @@ const BaseFilterPage: React.FC = () => {
 
   return (
     <div className="page-container">
-      <Card className="glass-card">
-        <Title level={3}>基址过滤</Title>
-        <Text type="secondary">对扫描结果进行筛选和过滤</Text>
-      </Card>
-
       <Card className="glass-card" title="过滤条件">
         <Form
           form={form}

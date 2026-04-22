@@ -28,7 +28,7 @@ import {
 import { getServerUrl, setServerUrl } from '../utils/config';
 import { scanService } from '../services/scanService';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const SettingsPage: React.FC = () => {
   const { message } = App.useApp();
@@ -331,11 +331,6 @@ const SettingsPage: React.FC = () => {
         margin: '0 auto'
       }}
     >
-      <Card className="glass-card">
-        <Title level={3}>系统设置</Title>
-        <Text type="secondary">配置 FastScanV3 的各项参数和选项</Text>
-      </Card>
-
       {/* 服务端配置 */}
       <Card className="glass-card" title={<Space><ApiOutlined />服务端配置</Space>}>
         <Row gutter={16}>
@@ -412,6 +407,7 @@ const SettingsPage: React.FC = () => {
                 rules={[{ required: true, message: '请选择目标进程' }]}
               >
                 <Input 
+                  className="target-process-input"
                   placeholder="请点击选择进程按钮选择目标进程" 
                   disabled 
                   value={selectedProcess ? selectedProcess.package : ''}

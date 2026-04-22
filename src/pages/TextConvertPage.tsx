@@ -18,7 +18,7 @@ import {
   DownloadOutlined
 } from '@ant-design/icons';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -165,11 +165,6 @@ const TextConvertPage: React.FC = () => {
 
   return (
     <div className="page-container">
-      <Card className="glass-card">
-        <Title level={3}>文本转换</Title>
-        <Text type="secondary">各种文本编码、解码和格式转换工具</Text>
-      </Card>
-
       <Card className="glass-card" title="转换设置">
         <Space size="large" style={{ width: '100%', marginBottom: 16 }}>
           <div>

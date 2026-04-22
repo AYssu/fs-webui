@@ -147,8 +147,6 @@ export default function PointerLoaderPage() {
 
   return (
     <div style={{ padding: '20px', maxWidth: '1400px', margin: '0 auto' }}>
-      <Title level={2}>指针加载与过滤</Title>
-      
       <Card title="文件选择" style={{ marginBottom: '20px' }}>
         <List
           dataSource={files}

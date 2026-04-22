@@ -79,8 +79,6 @@ export default function FormatConvertPage() {
 
   return (
     <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
-      <Title level={2}>格式转换</Title>
-      
       <Card title="转换模式" style={{ marginBottom: '20px' }}>
         <Radio.Group
           value={convertMode}

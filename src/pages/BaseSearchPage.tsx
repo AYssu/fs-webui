@@ -29,7 +29,7 @@ import { scanService } from '../services/scanService';
 import { getServerUrl } from '../utils/config';
 import { renderAnsiText } from '../utils/ansiColors';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const BaseSearchPage: React.FC = () => {
   const { message } = App.useApp();
@@ -665,11 +665,6 @@ const BaseSearchPage: React.FC = () => {
         margin: '0 auto'
       }}
     >
-      <Card className="glass-card">
-        <Title level={3}>内存搜索</Title>
-        <Text type="secondary">在目标进程中搜索指定数值或数据</Text>
-      </Card>
-
       <Card className="glass-card" title="搜索配置">
         <Form
           form={form}
@@ -947,8 +942,8 @@ const BaseSearchPage: React.FC = () => {
               marginBottom: 24
             }}
           >
-            <Row gutter={16}>
-              <Col xs={24} sm={12} md={6}>
+            <Row gutter={[12, 12]}>
+              <Col xs={12} sm={12} md={6}>
                 <Form.Item
                   name="handleB4"
                   valuePropName="checked"
@@ -975,7 +970,7 @@ const BaseSearchPage: React.FC = () => {
                 </Form.Item>
               </Col>
               
-              <Col xs={24} sm={12} md={6}>
+              <Col xs={12} sm={12} md={6}>
                 <Form.Item
                   name="skipPageFault"
                   valuePropName="checked"
@@ -1029,7 +1024,7 @@ const BaseSearchPage: React.FC = () => {
                 </Form.Item>
               </Col>
               
-              <Col xs={24} sm={12} md={6}>
+              <Col xs={12} sm={12} md={6}>
                 <Form.Item
                   name="negativeOffset"
                   valuePropName="checked"
@@ -1056,7 +1051,7 @@ const BaseSearchPage: React.FC = () => {
                 </Form.Item>
               </Col>
 
-              <Col xs={24} sm={12} md={6}>
+              <Col xs={12} sm={12} md={6}>
                 <Form.Item
                   name="byteAlignment"
                   valuePropName="checked"
@@ -1083,7 +1078,7 @@ const BaseSearchPage: React.FC = () => {
                 </Form.Item>
               </Col>
 
-              <Col xs={24} sm={12} md={6}>
+              <Col xs={12} sm={12} md={6}>
                 <Form.Item
                   name="pageAlignment"
                   valuePropName="checked"
@@ -1112,7 +1107,7 @@ const BaseSearchPage: React.FC = () => {
             </Row>
           </Card>
 
-          <Form.Item>
+          <Form.Item className="scan-submit-item">
             <Button 
               type="primary" 
               htmlType="submit" 
